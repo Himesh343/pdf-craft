@@ -7,7 +7,7 @@ export default function PdfToWordPage() {
       <PageHeader
         eyebrow="PDF to Word"
         title="Convert PDF to Word"
-        description="Upload a PDF and choose how the document should be prepared for Word conversion."
+        description="Upload a PDF and convert its text into an editable Word document."
       />
       <div className="mt-10">
         <PdfToWordTool />

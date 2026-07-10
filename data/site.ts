@@ -67,12 +67,12 @@ export const tools: ToolDefinition[] = [
   {
     title: "PDF to Word",
     description:
-      "Prepare PDF files for editable Word document conversion with a clean step-by-step workflow.",
+      "Convert text-based PDF files into downloadable editable Word documents.",
     href: "/tools/pdf-to-word",
     icon: "file-text",
     badge: "CONVERT",
-    status: "Planned",
-    actionLabel: "Preview Tool",
+    status: "Available",
+    actionLabel: "Open Tool",
   },
   {
     title: "PDF to Google Docs",

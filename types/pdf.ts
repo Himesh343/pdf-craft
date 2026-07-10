@@ -117,3 +117,22 @@ export interface PdfPreviewPageSize {
   width: number;
   height: number;
 }
+
+export interface PdfExtractedPage {
+  pageNumber: number;
+  text: string;
+}
+
+export interface PdfToWordOptions {
+  file: File;
+  mode: "basic" | "preserve-layout" | "ocr";
+}
+
+export type PdfConversionStatus =
+  | "idle"
+  | "validating"
+  | "reading"
+  | "extracting"
+  | "generating"
+  | "success"
+  | "error";
