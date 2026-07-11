@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { FileText, Info, Sparkles } from "lucide-react";
+import { AlertTriangle, FileText, Info, Sparkles } from "lucide-react";
 
 import { FileDropzone } from "@/components/tools/file-dropzone";
 import { ProgressStatus } from "@/components/tools/progress-status";
@@ -11,14 +11,28 @@ import { Label } from "@/components/ui/label";
 import { convertPdfToWord } from "@/lib/pdf/convertPdfToWord";
 import {
   downloadBlob,
+  getLayoutWordDocumentFilename,
   getWordDocumentFilename,
 } from "@/lib/pdf/downloadFile";
 import { cn } from "@/lib/utils";
-import type { PdfConversionStatus, PdfToWordOptions } from "@/types/pdf";
+import type {
+  PdfLayoutConversionSummary,
+  PdfConversionQuality,
+  PdfConversionStatus,
+  PdfToWordOptions,
+} from "@/types/pdf";
 
 const MAX_PDF_SIZE_BYTES = 25 * 1024 * 1024;
 
 type ConversionMode = PdfToWordOptions["mode"];
+
+type ConversionResult = {
+  blob: Blob;
+  filename: string;
+  quality?: PdfConversionQuality;
+  layoutSummary?: PdfLayoutConversionSummary;
+  message: string;
+};
 
 const conversionModes: Array<{
   id: ConversionMode;
@@ -37,7 +51,14 @@ const conversionModes: Array<{
     id: "preserve-layout",
     title: "Preserve Layout",
     description:
-      "Designed to retain tables, spacing, images, and visual structure.",
+      "Keeps the original PDF appearance by placing each page into Word as a high-quality image.",
+    status: "Available",
+  },
+  {
+    id: "advanced-editable",
+    title: "Advanced Editable Layout",
+    description:
+      "Designed to preserve layout while keeping text, tables, and structure editable.",
     status: "Coming Soon",
   },
   {
@@ -73,20 +94,122 @@ function validateFile(file: File | null) {
   return "";
 }
 
-function getStatusLabel(status: PdfConversionStatus) {
+function getStatusLabel(status: PdfConversionStatus, mode: ConversionMode) {
   if (status === "reading" || status === "validating") {
     return "Reading PDF...";
   }
 
+  if (status === "rendering") {
+    return "Rendering pages...";
+  }
+
   if (status === "extracting") {
-    return "Extracting text...";
+    return "Extracting formatted text...";
   }
 
   if (status === "generating") {
-    return "Creating Word document...";
+    return mode === "preserve-layout"
+      ? "Building Word document..."
+      : "Creating Word document...";
   }
 
   return "Preparing download...";
+}
+
+function formatNumber(value: number) {
+  return new Intl.NumberFormat("en-US").format(value);
+}
+
+function ConversionSummaryCard({ quality }: { quality: PdfConversionQuality }) {
+  const summaryItems = [
+    { label: "Pages converted", value: quality.extractedPages },
+    { label: "Paragraphs detected", value: quality.detectedParagraphs },
+    { label: "Headings detected", value: quality.detectedHeadings },
+    { label: "Text characters extracted", value: quality.totalCharacters },
+  ];
+
+  return (
+    <div className="rounded-xl border border-white/12 bg-[#050816]/60 p-5">
+      <div className="flex items-center gap-3">
+        <span className="grid size-9 place-items-center rounded-lg bg-cyan-300/10 text-cyan-100">
+          <Info className="size-4" />
+        </span>
+        <div>
+          <h3 className="font-semibold text-white">Conversion summary</h3>
+          <p className="text-sm text-slate-400">
+            Structure detected from the PDF text extraction.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {summaryItems.map((item) => (
+          <div
+            key={item.label}
+            className="rounded-lg border border-white/12 bg-white/[0.04] p-3"
+          >
+            <p className="text-xs uppercase tracking-[0.14em] text-slate-400">
+              {item.label}
+            </p>
+            <p className="mt-1 text-lg font-semibold text-white">
+              {formatNumber(item.value)}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {quality.warnings.length > 0 ? (
+        <div className="mt-4 space-y-2 rounded-lg border border-amber-300/20 bg-amber-300/10 p-3 text-sm text-amber-100">
+          {quality.warnings.map((warning) => (
+            <div key={warning} className="flex gap-2">
+              <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+              <p>{warning}</p>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function LayoutSummaryCard({ summary }: { summary: PdfLayoutConversionSummary }) {
+  const summaryItems = [
+    { label: "Pages rendered", value: formatNumber(summary.pagesRendered) },
+    { label: "Layout mode", value: summary.layoutMode },
+    { label: "Editability", value: summary.editability },
+  ];
+
+  return (
+    <div className="rounded-xl border border-white/12 bg-[#050816]/60 p-5">
+      <div className="flex items-center gap-3">
+        <span className="grid size-9 place-items-center rounded-lg bg-cyan-300/10 text-cyan-100">
+          <Info className="size-4" />
+        </span>
+        <div>
+          <h3 className="font-semibold text-white">Layout summary</h3>
+          <p className="text-sm text-slate-400">
+            Each PDF page was rendered into the Word document.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3">
+        {summaryItems.map((item) => (
+          <div
+            key={item.label}
+            className="rounded-lg border border-white/12 bg-white/[0.04] p-3"
+          >
+            <p className="text-xs uppercase tracking-[0.14em] text-slate-400">
+              {item.label}
+            </p>
+            <p className="mt-1 text-sm font-semibold text-white sm:text-base">
+              {item.value}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export function PdfToWordTool() {
@@ -95,16 +218,19 @@ export function PdfToWordTool() {
   const [status, setStatus] = useState<PdfConversionStatus>("idle");
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
-  const [result, setResult] = useState<{ blob: Blob; filename: string } | null>(
-    null
-  );
+  const [result, setResult] = useState<ConversionResult | null>(null);
   const progressTimerRef = useRef<number | null>(null);
 
   const fileError = useMemo(() => validateFile(file), [file]);
-  const isProcessing = ["validating", "reading", "extracting", "generating"].includes(
-    status
-  );
-  const canConvert = Boolean(file) && !fileError && mode === "basic" && !isProcessing;
+  const isProcessing = [
+    "validating",
+    "reading",
+    "extracting",
+    "rendering",
+    "generating",
+  ].includes(status);
+  const isAvailableMode = mode === "basic" || mode === "preserve-layout";
+  const canConvert = Boolean(file) && !fileError && isAvailableMode && !isProcessing;
 
   const clearProgressTimer = () => {
     if (progressTimerRef.current) {
@@ -129,12 +255,14 @@ export function PdfToWordTool() {
 
     progressTimerRef.current = window.setInterval(() => {
       setProgress((current) => {
-        const next = Math.min(current + 6, 92);
+        const next = Math.min(current + 5, 92);
 
-        if (next >= 72) {
+        if (next >= 84) {
           setStatus("generating");
-        } else if (next >= 32) {
-          setStatus("extracting");
+        } else if (next >= 66) {
+          setStatus("generating");
+        } else if (next >= 42) {
+          setStatus(mode === "preserve-layout" ? "rendering" : "extracting");
         } else {
           setStatus("reading");
         }
@@ -158,13 +286,16 @@ export function PdfToWordTool() {
     startProgress();
 
     try {
-      const blob = await convertPdfToWord(file);
-      const filename = getWordDocumentFilename(file.name);
+      const conversion = await convertPdfToWord({ file, mode });
+      const filename =
+        mode === "preserve-layout"
+          ? getLayoutWordDocumentFilename(file.name)
+          : getWordDocumentFilename(file.name);
 
       clearProgressTimer();
       setProgress(100);
       setStatus("success");
-      setResult({ blob, filename });
+      setResult({ ...conversion, filename });
     } catch (caughtError) {
       clearProgressTimer();
       setProgress(0);
@@ -210,9 +341,9 @@ export function PdfToWordTool() {
           <div className="flex gap-3">
             <Info className="mt-0.5 size-4 shrink-0 text-cyan-200" />
             <p>
-              Basic conversion is optimized for text-based PDFs. Complex layouts,
-              scanned documents, and advanced formatting may require enhanced
-              conversion support.
+              {mode === "preserve-layout"
+                ? "Preserve Layout creates a Word document that closely matches the PDF appearance by embedding each page as an image. Use Basic Editable Word when editable text is more important."
+                : "Basic conversion is optimized for text-based PDFs. Complex layouts, scanned documents, and advanced formatting may require enhanced conversion support."}
             </p>
           </div>
         </div>
@@ -252,6 +383,13 @@ export function PdfToWordTool() {
                       <span className="mt-1 block text-sm leading-6 text-slate-300">
                         {option.description}
                       </span>
+                      <span className="mt-2 block text-xs font-medium uppercase tracking-[0.14em] text-cyan-100/80">
+                        {option.id === "basic"
+                          ? "Editable output"
+                          : option.id === "preserve-layout"
+                            ? "Best visual match"
+                            : "Enhanced conversion"}
+                      </span>
                     </span>
                     <span className="shrink-0 rounded-full border border-white/12 bg-white/8 px-2.5 py-1 text-xs font-medium text-slate-200">
                       {option.status}
@@ -280,19 +418,27 @@ export function PdfToWordTool() {
         </Button>
 
         {isProcessing ? (
-          <ProgressStatus value={progress} label={getStatusLabel(status)} />
+          <ProgressStatus value={progress} label={getStatusLabel(status, mode)} />
         ) : null}
 
         {status === "success" && result ? (
-          <ResultCard
-            title="Word document ready"
-            description="Your Word document has been generated successfully."
-            fileLabel={result.filename}
-            actionLabel="Download Word Document"
-            resetLabel="Convert Another PDF"
-            onDownload={() => downloadBlob(result.blob, result.filename)}
-            onReset={reset}
-          />
+          <div className="space-y-4">
+            <ResultCard
+              title="Word document ready"
+              description={result.message}
+              fileLabel={result.filename}
+              actionLabel="Download Word Document"
+              resetLabel="Convert Another PDF"
+              onDownload={() => downloadBlob(result.blob, result.filename)}
+              onReset={reset}
+            />
+            {result.quality ? (
+              <ConversionSummaryCard quality={result.quality} />
+            ) : null}
+            {result.layoutSummary ? (
+              <LayoutSummaryCard summary={result.layoutSummary} />
+            ) : null}
+          </div>
         ) : null}
       </div>
     </div>

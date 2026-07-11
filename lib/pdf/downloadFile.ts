@@ -22,6 +22,12 @@ export function getWordDocumentFilename(originalName: string): string {
   return `${withoutPdf || "document"}.docx`;
 }
 
+export function getLayoutWordDocumentFilename(originalName: string): string {
+  const withoutPdf = originalName.replace(/\.pdf$/i, "");
+
+  return `${withoutPdf || "document"}-layout.docx`;
+}
+
 export function downloadBlob(blob: Blob, filename: string): void {
   if (typeof window === "undefined" || typeof document === "undefined") {
     throw new Error("Downloads are only available in a browser.");

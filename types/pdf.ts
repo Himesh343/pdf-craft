@@ -118,14 +118,68 @@ export interface PdfPreviewPageSize {
   height: number;
 }
 
+export interface PdfTextItem {
+  text: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fontName?: string;
+}
+
+export interface PdfExtractedLine {
+  text: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface PdfExtractedParagraph {
+  text: string;
+  type: "heading" | "paragraph" | "list" | "table-like";
+  lines: PdfExtractedLine[];
+}
+
 export interface PdfExtractedPage {
   pageNumber: number;
   text: string;
+  lines: PdfExtractedLine[];
+  paragraphs: PdfExtractedParagraph[];
+}
+
+export interface PdfConversionQuality {
+  totalPages: number;
+  extractedPages: number;
+  totalCharacters: number;
+  detectedHeadings: number;
+  detectedParagraphs: number;
+  warnings: string[];
+}
+
+export type PdfToWordMode =
+  | "basic"
+  | "preserve-layout"
+  | "advanced-editable"
+  | "ocr";
+
+export interface PdfLayoutConversionSummary {
+  pagesRendered: number;
+  layoutMode: string;
+  editability: string;
+}
+
+export interface PdfToWordResult {
+  blob: Blob;
+  quality?: PdfConversionQuality;
+  layoutSummary?: PdfLayoutConversionSummary;
+  mode: PdfToWordMode;
+  message: string;
 }
 
 export interface PdfToWordOptions {
   file: File;
-  mode: "basic" | "preserve-layout" | "ocr";
+  mode: PdfToWordMode;
 }
 
 export type PdfConversionStatus =
@@ -133,6 +187,7 @@ export type PdfConversionStatus =
   | "validating"
   | "reading"
   | "extracting"
+  | "rendering"
   | "generating"
   | "success"
   | "error";
