@@ -7,11 +7,10 @@ interface PageShellProps {
 
 export function PageShell({ children }: PageShellProps) {
   return (
-    <div className="flex min-h-dvh flex-col bg-[#050816] text-white">
+    <div className="flex min-h-dvh flex-col overflow-hidden bg-[var(--pc-bg)] text-[var(--pc-text)]">
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-cyan-500/12 blur-3xl" />
-        <div className="absolute right-[-12rem] top-40 h-[30rem] w-[30rem] rounded-full bg-purple-500/12 blur-3xl" />
-        <div className="absolute bottom-0 left-[-10rem] h-[28rem] w-[28rem] rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_82%_0%,rgba(37,99,235,0.10),transparent_32%),radial-gradient(circle_at_75%_86%,rgba(245,158,11,0.08),transparent_34%),linear-gradient(180deg,#05070d_0%,#0b1220_52%,#05070d_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:80px_80px] opacity-30" />
       </div>
       <Navbar />
       <main className="relative z-10 flex-1">{children}</main>

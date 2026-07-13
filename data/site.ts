@@ -36,16 +36,6 @@ export interface StepDefinition {
 
 export const tools: ToolDefinition[] = [
   {
-    title: "Edit PDF",
-    description:
-      "Add text, highlight, draw shapes, sign, blur, remove text, redact content, and manage PDF pages.",
-    href: "/tools/edit-pdf",
-    icon: "edit",
-    badge: "EDIT",
-    status: "Available",
-    actionLabel: "Open Tool",
-  },
-  {
     title: "Protect PDF",
     description:
       "Add password protection and configure document permissions before sharing sensitive PDF files.",
@@ -65,39 +55,49 @@ export const tools: ToolDefinition[] = [
     actionLabel: "Open Tool",
   },
   {
+    title: "Edit PDF",
+    description:
+      "Add text, highlight, draw shapes, sign, blur, remove text, redact content, and manage PDF pages.",
+    href: "/tools/edit-pdf",
+    icon: "edit",
+    badge: "EDIT",
+    status: "Coming Soon",
+    actionLabel: "Coming Soon",
+  },
+  {
     title: "PDF to Word",
     description:
-      "Convert text-based PDF files into downloadable editable Word documents.",
+      "Convert PDFs into editable Word documents or preserve the original visual layout.",
     href: "/tools/pdf-to-word",
     icon: "file-text",
     badge: "CONVERT",
-    status: "Available",
-    actionLabel: "Open Tool",
+    status: "Coming Soon",
+    actionLabel: "Coming Soon",
   },
   {
     title: "PDF to Google Docs",
     description:
-      "Connect Google Drive in a future release to upload, convert, and open PDFs as Google Docs.",
+      "Connect Google Drive to upload, convert, and open PDFs as Google Docs.",
     href: "/tools/google-docs",
     icon: "cloud",
     badge: "GOOGLE DRIVE",
     status: "Coming Soon",
-    actionLabel: "View Details",
+    actionLabel: "Coming Soon",
   },
 ];
 
 export const heroStats = [
   {
-    title: "Complete PDF workflows",
-    description: "Editing, protection, unlocking, conversion, and export flows.",
+    title: "Secure workflow",
+    description: "Protect PDFs with passwords and configure sharing permissions.",
   },
   {
-    title: "Fast interactions",
-    description: "Simple upload, configure, edit, and download experience.",
+    title: "Unlock owned files",
+    description: "Remove known passwords from PDFs you own and can open.",
   },
   {
     title: "Privacy-focused",
-    description: "Clear handling for sensitive documents.",
+    description: "Clear file handling for sensitive document workflows.",
   },
 ];
 
@@ -111,13 +111,13 @@ export const privacyFeatures: FeatureDefinition[] = [
   {
     title: "Secure configuration",
     description:
-      "Password fields, edit tools, unlock inputs, and permission controls are presented clearly before processing begins.",
+      "Password fields, unlock inputs, and permission controls are presented clearly before processing begins.",
     icon: "key",
   },
   {
     title: "Scalable architecture",
     description:
-      "The interface is structured so editing, protection, unlocking, conversion, and cloud export services can evolve cleanly.",
+      "The interface is structured so planned editing, conversion, and cloud export services can evolve cleanly.",
     icon: "sparkles",
   },
 ];
@@ -125,8 +125,7 @@ export const privacyFeatures: FeatureDefinition[] = [
 export const howItWorksSteps: StepDefinition[] = [
   {
     title: "Choose a tool",
-    description:
-      "Select editing, protection, unlocking, conversion, or Google Docs workflow based on your document need.",
+    description: "Select Protect PDF or Unlock PDF based on your document need.",
   },
   {
     title: "Upload your PDF",
@@ -136,7 +135,7 @@ export const howItWorksSteps: StepDefinition[] = [
   {
     title: "Download or continue",
     description:
-      "Once processing is complete, download the result or continue with the next action.",
+      "Once processing is complete, download the result or continue with another secure workflow.",
   },
 ];
 
@@ -144,7 +143,7 @@ export const toolHighlights: FeatureDefinition[] = [
   {
     title: "Polished inputs",
     description:
-      "Every workflow includes clear file selection, configuration options, and action controls.",
+      "Every available workflow includes clear file selection, configuration options, and action controls.",
     icon: "wand",
   },
   {
@@ -156,7 +155,7 @@ export const toolHighlights: FeatureDefinition[] = [
   {
     title: "Ready for document processing",
     description:
-      "The interface supports editing, protection, and unlocking flows while keeping conversion and export paths ready to expand.",
+      "The interface supports protection and unlocking flows while keeping planned workflows ready to expand.",
     icon: "lock",
   },
 ];

@@ -75,8 +75,9 @@ export function FileDropzone({
           selectFile(event.dataTransfer.files[0]);
         }}
         className={cn(
-          "flex min-h-56 w-full flex-col items-center justify-center rounded-xl border border-dashed border-white/18 bg-white/[0.05] p-6 text-center transition hover:border-cyan-300/45 hover:bg-white/[0.08]",
-          isDragging && "border-cyan-300/70 bg-cyan-300/10"
+          "flex min-h-56 w-full flex-col items-center justify-center rounded-xl border border-dashed border-[var(--pc-border)] bg-[rgba(15,23,42,0.46)] p-6 text-center shadow-inner shadow-black/20 backdrop-blur-xl transition hover:border-[var(--pc-border-active)] hover:bg-[var(--pc-card-hover)]",
+          isDragging &&
+            "border-[var(--pc-border-active)] bg-[var(--pc-primary-soft)]"
         )}
       >
         <input
@@ -86,33 +87,33 @@ export function FileDropzone({
           className="hidden"
           onChange={(event) => selectFile(event.target.files?.[0])}
         />
-        <span className="grid size-14 place-items-center rounded-xl border border-white/12 bg-white/8 text-cyan-100">
+        <span className="pc-icon-box grid size-14 place-items-center rounded-xl">
           <Upload className="size-7" />
         </span>
-        <span className="mt-4 text-base font-semibold text-white">
+        <span className="mt-4 text-base font-semibold text-[var(--pc-text)]">
           Drop your PDF here
         </span>
-        <span className="mt-2 max-w-sm text-sm leading-6 text-slate-300">
+        <span className="mt-2 max-w-sm text-sm leading-6 text-[var(--pc-text-secondary)]">
           Drag and drop a PDF file, or click to browse from your device.
         </span>
       </button>
 
       {file ? (
-        <div className="flex flex-col gap-4 rounded-xl border border-white/12 bg-[#050816]/70 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="pc-card-soft flex flex-col gap-4 rounded-xl p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex min-w-0 items-center gap-3">
-            <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-cyan-300/10 text-cyan-100">
+            <span className="pc-icon-box grid size-10 shrink-0 place-items-center rounded-lg">
               <FileText className="size-5" />
             </span>
             <div className="min-w-0">
-              <p className="truncate text-sm font-medium text-white">{file.name}</p>
-              <p className="text-xs text-slate-400">{formatFileSize(file.size)}</p>
+              <p className="truncate text-sm font-medium text-[var(--pc-text)]">{file.name}</p>
+              <p className="text-xs text-[var(--pc-text-muted)]">{formatFileSize(file.size)}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Button
               type="button"
               variant="outline"
-              className="border-white/12 bg-white/8 text-slate-200 hover:bg-white/12 hover:text-white"
+              className="pc-secondary-button border-[var(--pc-border)] bg-transparent text-[var(--pc-text-secondary)] hover:text-[var(--pc-text)]"
               onClick={() => inputRef.current?.click()}
             >
               Change PDF
@@ -121,7 +122,7 @@ export function FileDropzone({
               type="button"
               variant="ghost"
               size="icon"
-              className="text-slate-300 hover:bg-white/10 hover:text-white"
+              className="text-[var(--pc-text-muted)] hover:bg-[var(--pc-card-hover)] hover:text-[var(--pc-text)]"
               onClick={() => {
                 onFileChange(null);
                 if (inputRef.current) {
@@ -136,7 +137,7 @@ export function FileDropzone({
         </div>
       ) : null}
 
-      {error ? <p className="text-sm text-rose-300">{error}</p> : null}
+      {error ? <p className="text-sm text-red-300">{error}</p> : null}
     </div>
   );
 }

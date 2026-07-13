@@ -1,6 +1,10 @@
 import { createWordDocumentFromPages } from "@/lib/pdf/createWordDocument";
 import { createWordDocumentFromPdfImages } from "@/lib/pdf/createWordFromPdfImages";
 import { extractTextFromPdf } from "@/lib/pdf/extractPdfText";
+import {
+  getLayoutWordDocumentFilename,
+  getWordDocumentFilename,
+} from "@/lib/pdf/downloadFile";
 import type {
   PdfConversionQuality,
   PdfToWordOptions,
@@ -65,17 +69,27 @@ export async function convertPdfToWord({
   }
 
   if (file.size > MAX_PDF_SIZE_BYTES) {
-    throw new Error("PDF file size must be 25 MB or less.");
+    throw new Error("File size must be under 25 MB.");
   }
 
   if (mode === "preserve-layout") {
     const conversion = await createWordDocumentFromPdfImages({ file });
+    const warnings = [
+      "Text may not be directly editable in Preserve Layout mode because each PDF page is inserted as an image.",
+    ];
+
+    if (file.size > 10 * 1024 * 1024) {
+      warnings.push("Large PDFs may take longer to process and may generate larger Word files.");
+    }
 
     return {
       blob: conversion.blob,
-      layoutSummary: conversion.summary,
+      fileName: getLayoutWordDocumentFilename(file.name),
+      visualSummary: conversion.summary,
       mode,
-      message: "Your layout-preserved Word document has been generated successfully.",
+      message:
+        "Your PDF has been converted into a Word document that closely matches the original visual layout.",
+      warnings,
     };
   }
 
@@ -94,11 +108,21 @@ export async function convertPdfToWord({
 
   const blob = await createWordDocumentFromPages(pages);
   const quality = createQualitySummary(pages);
+  const warnings = [
+    "Some layout details may change because this mode prioritizes editable text.",
+    ...quality.warnings,
+  ];
+
+  if (file.size > 10 * 1024 * 1024) {
+    warnings.push("Large PDFs may take longer to process and may generate larger Word files.");
+  }
 
   return {
     blob,
+    fileName: getWordDocumentFilename(file.name),
     quality,
     mode,
-    message: "Your editable Word document has been generated successfully.",
+    message: "Your PDF text has been converted into an editable Word document.",
+    warnings,
   };
 }

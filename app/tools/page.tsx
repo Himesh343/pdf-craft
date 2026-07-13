@@ -9,8 +9,8 @@ export default function ToolsPage() {
       <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <PageHeader
           eyebrow="PDF Tools"
-          title="Choose a PDF workflow"
-          description="Start with a focused tool for protecting, converting, or preparing PDF documents for your workflow."
+          title="Choose the right PDF workflow."
+          description="Start with secure PDF protection and unlocking tools. More editing and conversion workflows are planned."
         />
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {tools.map((tool, index) => (

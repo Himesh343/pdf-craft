@@ -20,28 +20,26 @@ export function LandingHero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-3 py-1.5 text-sm text-slate-200 backdrop-blur-xl"
+          className="inline-flex items-center gap-2 rounded-full border border-[color-mix(in_srgb,var(--pc-accent)_28%,var(--pc-border))] bg-[rgba(15,23,42,0.58)] px-3 py-1.5 text-sm text-[var(--pc-text-secondary)] shadow-lg shadow-black/20 backdrop-blur-xl"
         >
-          <Sparkles className="size-4 text-cyan-200" />
+          <Sparkles className="size-4 text-[var(--pc-accent)]" />
           Secure PDF tools for modern document workflows
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.08, duration: 0.55 }}
-          className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl"
+          className="mt-6 text-5xl font-semibold tracking-tight text-[var(--pc-text)] sm:text-6xl lg:text-7xl"
         >
-          Convert, protect, and manage PDFs with confidence.
+          Protect and unlock PDFs with confidence.
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.16, duration: 0.55 }}
-          className="mt-6 max-w-2xl text-lg leading-8 text-slate-300"
+          className="mt-6 max-w-2xl text-lg leading-8 text-[var(--pc-text-secondary)]"
         >
-          PDFCraft helps you protect documents, prepare PDF-to-Word conversions,
-          and streamline Google Docs workflows through a clean, secure, and
-          easy-to-use interface.
+          PDFCraft helps you add password protection to PDFs and unlock protected PDFs you own through a clean, privacy-focused document workflow.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -50,18 +48,18 @@ export function LandingHero() {
           className="mt-8 flex flex-col gap-3 sm:flex-row"
         >
           <Link
-            href="/tools"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 px-5 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:scale-[1.02] hover:opacity-95"
+            href="/tools/protect-pdf"
+            className="pc-primary-button inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold transition hover:scale-[1.02]"
           >
-            Explore Tools
+            Protect PDF
             <ArrowRight className="size-4" />
           </Link>
           <Link
-            href="/tools/protect-pdf"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-white/12 bg-white/8 px-5 text-sm font-semibold text-white backdrop-blur-xl transition hover:border-cyan-300/40 hover:bg-white/12"
+            href="/tools"
+            className="pc-secondary-button inline-flex h-12 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold transition"
           >
-            <FileLock2 className="size-4 text-cyan-200" />
-            Protect PDF
+            <FileLock2 className="size-4 text-[var(--pc-accent)]" />
+            Explore Tools
           </Link>
         </motion.div>
         <motion.div
@@ -71,12 +69,9 @@ export function LandingHero() {
           className="mt-10 grid gap-3 sm:grid-cols-3"
         >
           {heroStats.map((stat) => (
-            <div
-              key={stat.title}
-              className="rounded-xl border border-white/12 bg-white/[0.05] p-4 backdrop-blur-xl"
-            >
-              <p className="text-base font-semibold text-white">{stat.title}</p>
-              <p className="mt-2 text-sm leading-6 text-slate-400">
+            <div key={stat.title} className="pc-card rounded-xl p-4 transition hover:border-[var(--pc-border-active)] hover:bg-[var(--pc-card-hover)]">
+              <p className="text-base font-semibold text-[var(--pc-text)]">{stat.title}</p>
+              <p className="mt-2 text-sm leading-6 text-[var(--pc-text-muted)]">
                 {stat.description}
               </p>
             </div>
@@ -90,40 +85,40 @@ export function LandingHero() {
         transition={{ delay: 0.18, duration: 0.6, ease: "easeOut" }}
         className="relative min-h-[32rem]"
       >
-        <div className="absolute inset-x-6 top-8 h-72 rounded-full bg-cyan-400/15 blur-3xl" />
+        <div className="absolute inset-x-8 top-6 h-64 rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.16),rgba(37,99,235,0.08)_42%,transparent_68%)] blur-3xl" />
         <div className="relative mx-auto max-w-md">
-          <div className="absolute left-8 top-8 h-[28rem] w-72 rotate-[-10deg] rounded-2xl border border-white/12 bg-white/[0.04] backdrop-blur-xl" />
-          <div className="absolute right-5 top-16 h-[27rem] w-72 rotate-[9deg] rounded-2xl border border-purple-300/20 bg-purple-300/[0.06] backdrop-blur-xl" />
-          <div className="relative rounded-2xl border border-white/15 bg-[#0b1024]/90 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="absolute left-8 top-8 h-[28rem] w-72 rotate-[-10deg] rounded-2xl border border-[var(--pc-border-soft)] bg-[rgba(15,23,42,0.38)] shadow-2xl shadow-black/25 backdrop-blur-xl" />
+          <div className="absolute right-5 top-16 h-[27rem] w-72 rotate-[9deg] rounded-2xl border border-[var(--pc-border)] bg-[rgba(17,24,39,0.56)] shadow-2xl shadow-black/25 backdrop-blur-xl" />
+          <div className="pc-card-strong relative rounded-2xl p-5">
+            <div className="flex items-center justify-between border-b border-[var(--pc-border-soft)] pb-4">
               <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-lg bg-cyan-300/10 text-cyan-100">
+                <span className="pc-icon-box grid size-10 place-items-center rounded-lg">
                   <FileText className="size-5" />
                 </span>
                 <div>
-                  <p className="font-semibold text-white">Quarterly-report.pdf</p>
-                  <p className="text-sm text-slate-400">2.4 MB</p>
+                  <p className="font-semibold text-[var(--pc-text)]">Quarterly-report.pdf</p>
+                  <p className="text-sm text-[var(--pc-text-muted)]">2.4 MB</p>
                 </div>
               </div>
-              <ShieldCheck className="size-5 text-emerald-300" />
+              <ShieldCheck className="size-5 text-[var(--pc-success)]" />
             </div>
             <div className="space-y-4 py-6">
-              <div className="h-3 w-3/4 rounded-full bg-white/14" />
-              <div className="h-3 w-full rounded-full bg-white/10" />
-              <div className="h-3 w-5/6 rounded-full bg-white/10" />
+              <div className="h-3 w-3/4 rounded-full bg-[rgba(148,163,184,0.22)]" />
+              <div className="h-3 w-full rounded-full bg-[rgba(148,163,184,0.14)]" />
+              <div className="h-3 w-5/6 rounded-full bg-[rgba(148,163,184,0.14)]" />
               <div className="grid grid-cols-2 gap-3 pt-3">
-                <div className="h-24 rounded-xl border border-cyan-300/20 bg-cyan-300/10" />
-                <div className="h-24 rounded-xl border border-purple-300/20 bg-purple-300/10" />
+                <div className="h-24 rounded-xl border border-[color-mix(in_srgb,var(--pc-primary)_28%,var(--pc-border))] bg-[var(--pc-primary-soft)] shadow-inner shadow-emerald-950/20" />
+                <div className="h-24 rounded-xl border border-[color-mix(in_srgb,var(--pc-accent)_28%,var(--pc-border))] bg-[var(--pc-accent-soft)] shadow-inner shadow-amber-950/20" />
               </div>
             </div>
-            <div className="rounded-xl border border-white/12 bg-white/[0.06] p-4">
+            <div className="rounded-xl border border-[var(--pc-border)] bg-[rgba(15,23,42,0.58)] p-4 backdrop-blur-xl">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-300">Document workflow</span>
-                <span className="font-semibold text-cyan-100">Ready</span>
+                <span className="text-[var(--pc-text-secondary)]">Document workflow</span>
+                <span className="font-semibold text-[var(--pc-success)]">Ready</span>
               </div>
-              <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-[rgba(148,163,184,0.14)]">
                 <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400"
+                  className="h-full rounded-full bg-[linear-gradient(90deg,var(--pc-primary),var(--pc-primary-blue))]"
                   initial={{ width: "24%" }}
                   animate={{ width: ["24%", "78%", "46%", "88%"] }}
                   transition={{

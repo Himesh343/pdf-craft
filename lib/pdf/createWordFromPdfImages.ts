@@ -7,7 +7,7 @@ import {
   Paragraph,
 } from "docx";
 
-import type { PdfLayoutConversionSummary } from "@/types/pdf";
+import type { PdfVisualConversionSummary } from "@/types/pdf";
 
 const DOCX_MIME_TYPE =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -32,7 +32,7 @@ export interface CreateWordDocumentFromPdfImagesOptions {
 
 export interface CreateWordDocumentFromPdfImagesResult {
   blob: Blob;
-  summary: PdfLayoutConversionSummary;
+  summary: PdfVisualConversionSummary;
 }
 
 function ensureBrowser() {
@@ -196,9 +196,11 @@ export async function createWordDocumentFromPdfImages({
     return {
       blob: new Blob([copy], { type: DOCX_MIME_TYPE }),
       summary: {
+        totalPages: renderedPages.length,
         pagesRendered: renderedPages.length,
         layoutMode: "Preserved visual layout",
-        editability: "Page content inserted as images",
+        editability: "Page images",
+        outputQuality: "High visual match",
       },
     };
   } catch (error) {

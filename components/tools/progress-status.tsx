@@ -9,14 +9,14 @@ interface ProgressStatusProps {
 
 export function ProgressStatus({ value, label }: ProgressStatusProps) {
   return (
-    <div className="rounded-xl border border-white/12 bg-white/[0.06] p-5 backdrop-blur-xl">
-      <div className="mb-4 flex items-center gap-3 text-sm text-slate-200">
-        <Loader2 className="size-4 animate-spin text-cyan-200" />
+    <div className="pc-card rounded-xl p-5">
+      <div className="mb-4 flex items-center gap-3 text-sm text-[var(--pc-text-secondary)]">
+        <Loader2 className="size-4 animate-spin text-[var(--pc-primary)]" />
         <span>{label}</span>
       </div>
       <div className="mb-2 flex items-center justify-between text-sm">
-        <span className="font-medium text-slate-300">Progress</span>
-        <span className="tabular-nums text-slate-300">{value}%</span>
+        <span className="font-medium text-[var(--pc-text-secondary)]">Progress</span>
+        <span className="tabular-nums text-[var(--pc-text-secondary)]">{value}%</span>
       </div>
       <Progress value={value} />
     </div>

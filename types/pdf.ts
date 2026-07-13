@@ -163,18 +163,22 @@ export type PdfToWordMode =
   | "advanced-editable"
   | "ocr";
 
-export interface PdfLayoutConversionSummary {
+export interface PdfVisualConversionSummary {
+  totalPages: number;
   pagesRendered: number;
   layoutMode: string;
   editability: string;
+  outputQuality: string;
 }
 
 export interface PdfToWordResult {
   blob: Blob;
+  fileName: string;
   quality?: PdfConversionQuality;
-  layoutSummary?: PdfLayoutConversionSummary;
+  visualSummary?: PdfVisualConversionSummary;
   mode: PdfToWordMode;
   message: string;
+  warnings: string[];
 }
 
 export interface PdfToWordOptions {
@@ -186,8 +190,11 @@ export type PdfConversionStatus =
   | "idle"
   | "validating"
   | "reading"
+  | "analyzing"
   | "extracting"
   | "rendering"
+  | "preserving"
   | "generating"
+  | "preparing"
   | "success"
   | "error";

@@ -134,7 +134,7 @@ export function UnlockPdfTool() {
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-      <div className="rounded-xl border border-white/12 bg-white/[0.06] p-5 shadow-2xl shadow-black/25 backdrop-blur-xl sm:p-6">
+      <div className="pc-card rounded-xl p-5 sm:p-6">
         <FileDropzone
           file={file}
           maxSizeBytes={MAX_PDF_SIZE_BYTES}
@@ -148,21 +148,21 @@ export function UnlockPdfTool() {
         />
       </div>
 
-      <div className="space-y-6 rounded-xl border border-white/12 bg-white/[0.06] p-5 shadow-2xl shadow-black/25 backdrop-blur-xl sm:p-6">
+      <div className="space-y-6 pc-card rounded-xl p-5 sm:p-6">
         <div className="flex items-center gap-3">
-          <span className="grid size-10 place-items-center rounded-lg bg-cyan-300/10 text-cyan-100">
+          <span className="grid size-10 place-items-center rounded-lg pc-icon-box">
             <KeyRound className="size-5" />
           </span>
           <div>
-            <h2 className="font-semibold text-white">Unlock settings</h2>
-            <p className="text-sm text-slate-400">
+            <h2 className="font-semibold text-[var(--pc-text)]">Unlock settings</h2>
+            <p className="text-sm text-[var(--pc-text-muted)]">
               Enter the current PDF password to create an unlocked copy.
             </p>
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="current-password" className="text-slate-200">
+          <Label htmlFor="current-password" className="text-[var(--pc-text-secondary)]">
             Current PDF password
           </Label>
           <div className="relative">
@@ -176,22 +176,22 @@ export function UnlockPdfTool() {
                 setError("");
               }}
               placeholder="Enter current password"
-              className="h-11 border-white/12 bg-[#050816]/60 pr-11 text-white placeholder:text-slate-500"
+              className="h-11 border-[var(--pc-border)] bg-[rgba(15,23,42,0.52)] backdrop-blur-xl pr-11 text-[var(--pc-text)] placeholder:text-[var(--pc-text-muted)]"
             />
             <button
               type="button"
               aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword((current) => !current)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--pc-text-muted)] transition hover:text-[var(--pc-text)]"
             >
               {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
             </button>
           </div>
         </div>
 
-        <div className="rounded-xl border border-cyan-300/15 bg-cyan-300/[0.06] p-4 text-sm leading-6 text-slate-300">
+        <div className="pc-card-soft rounded-xl p-4 text-sm leading-6 text-[var(--pc-text-secondary)]">
           <div className="flex gap-3">
-            <Info className="mt-0.5 size-4 shrink-0 text-cyan-200" />
+            <Info className="mt-0.5 size-4 shrink-0 text-[var(--pc-accent)]" />
             <p>
               You must know the current PDF password. PDFCraft does not recover,
               guess, or bypass unknown passwords.
@@ -199,9 +199,9 @@ export function UnlockPdfTool() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/12 bg-[#050816]/60 p-4 text-sm text-slate-300">
+        <div className="pc-card-soft rounded-xl p-4 text-sm text-[var(--pc-text-secondary)]">
           <div className="flex gap-3">
-            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-cyan-200" />
+            <ShieldCheck className="mt-0.5 size-4 shrink-0 text-[var(--pc-accent)]" />
             <p>
               Use this tool only for PDFs you own or have permission to modify.
               The unlocked copy is generated in your browser.
@@ -210,7 +210,7 @@ export function UnlockPdfTool() {
         </div>
 
         {error && status !== "success" ? (
-          <div className="rounded-xl border border-rose-300/20 bg-rose-300/10 p-4 text-sm text-rose-100">
+          <div className="pc-danger-box rounded-xl p-4 text-sm text-red-100">
             <p>{error}</p>
           </div>
         ) : null}
@@ -219,7 +219,7 @@ export function UnlockPdfTool() {
           type="button"
           disabled={!canSubmit}
           onClick={handleSubmit}
-          className="h-11 w-full bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 text-white hover:opacity-90"
+          className="pc-primary-button h-11 w-full hover:opacity-100"
         >
           <Unlock className="size-4" />
           Unlock PDF

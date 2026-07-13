@@ -48,13 +48,13 @@ export function FeatureSection({
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
         >
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-200">
+          <p className="pc-eyebrow text-sm font-semibold uppercase tracking-[0.2em]">
             {eyebrow}
           </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[var(--pc-text)] sm:text-4xl">
             {title}
           </h2>
-          <p className="mt-4 text-base leading-7 text-slate-300">
+          <p className="mt-4 text-base leading-7 text-[var(--pc-text-secondary)]">
             {description}
           </p>
         </motion.div>
@@ -69,15 +69,15 @@ export function FeatureSection({
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.06, duration: 0.4 }}
-                className="rounded-xl border border-white/12 bg-white/[0.06] p-5 backdrop-blur-xl"
+                className="pc-card rounded-xl p-5 transition hover:border-[var(--pc-border-active)] hover:bg-[var(--pc-card-hover)]"
               >
                 <div className="flex gap-4">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-cyan-300/10 text-cyan-100">
+                  <span className="pc-icon-box grid size-10 shrink-0 place-items-center rounded-lg">
                     <Icon className="size-5" />
                   </span>
                   <div>
-                    <h3 className="font-semibold text-white">{feature.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                    <h3 className="font-semibold text-[var(--pc-text)]">{feature.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[var(--pc-text-secondary)]">
                       {feature.description}
                     </p>
                   </div>
